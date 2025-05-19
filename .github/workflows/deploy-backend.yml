@@ -1,0 +1,60 @@
+name: Deploy Java Backend to ECS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::982534361279:role/github-actions-ecs-role
+          aws-region: us-east-2
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build Java App
+        run: ./gradlew clean build -x test
+
+      - name: Login to Amazon ECR
+        run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 982534361279.dkr.ecr.us-east-2.amazonaws.com
+
+      - name: Build and Push Docker Image to ECR
+        env:
+          ECR_REGISTRY: 982534361279.dkr.ecr.us-east-2.amazonaws.com
+        run: |
+          IMAGE_TAG=latest
+          docker build -t $ECR_REGISTRY/elephant-backend:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/elephant-backend:$IMAGE_TAG
+
+      - name: Fill in image URI in ECS task definition
+        run: |
+          IMAGE_URI=982534361279.dkr.ecr.us-east-2.amazonaws.com/elephant-backend
+          sed "s|<REPLACE_ME>|$IMAGE_URI|" ecs-task-def.json > filled-task-def.json
+
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: filled-task-def.json
+          service: elephant-service
+          cluster: elephant-cluster
+          wait-for-service-stability: true
