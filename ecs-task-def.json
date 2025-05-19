@@ -7,7 +7,7 @@
   "executionRoleArn": "arn:aws:iam::982534361279:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
-      "name": "elephant-backend",
+      "name": "elephantapi",
       "image": "<REPLACE_ME>",
       "essential": true,
       "portMappings": [
