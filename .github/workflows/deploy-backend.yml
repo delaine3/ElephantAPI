@@ -43,12 +43,12 @@ jobs:
           ECR_REGISTRY: 982534361279.dkr.ecr.us-east-2.amazonaws.com
         run: |
           IMAGE_TAG=latest
-          docker build -t $ECR_REGISTRY/elephant-backend:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/elephant-backend:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/elephantapi:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/elephantapi:$IMAGE_TAG
 
       - name: Fill in image URI in ECS task definition
         run: |
-          IMAGE_URI=982534361279.dkr.ecr.us-east-2.amazonaws.com/elephant-backend
+          IMAGE_URI=982534361279.dkr.ecr.us-east-2.amazonaws.com/elephantapi
           sed "s|<REPLACE_ME>|$IMAGE_URI|" ecs-task-def.json > filled-task-def.json
 
       - name: Deploy to ECS
