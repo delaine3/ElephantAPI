@@ -14,7 +14,9 @@ phases:
     commands:
       - echo Pushing the Docker image...
       - docker push 933534344279.dkr.ecr.us-east-2.amazonaws.com/elephantapi:latest
+      - echo Writing imagedefinitions.json...
       - printf '[{"name":"elephant-backend","imageUri":"933534344279.dkr.ecr.us-east-2.amazonaws.com/elephantapi:latest"}]' > imagedefinitions.json
 
 artifacts:
-  files: imagedefinitions.json
+  files:
+    - imagedefinitions.json
