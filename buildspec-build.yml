@@ -17,8 +17,7 @@ phases:
     commands:
       - echo "Logging into Amazon ECR..."
       - aws --version
-      - aws ecr get-login-password \
-        --region $AWS_DEFAULT_REGION \
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION \
         | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
@@ -27,11 +26,10 @@ phases:
       - ./gradlew clean build -x test
       - echo "Gradle build succeeded. Now building Docker image..."
       - docker build -t elephantapi .
-      - docker tag elephantapi:latest \
-        $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
+      - docker tag elephantapi:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
 
   post_build:
     commands:
       - echo "Pushing Docker image to ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
-      - echo "Image pushed successfully at `date`"
+      - echo "Image pushed successfully at $(date)"
