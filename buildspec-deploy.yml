@@ -1,0 +1,7 @@
+version: 0.2
+
+phases:
+  post_build:
+    commands:
+      - echo Deploying to ECS...
+      - aws ecs update-service --cluster elephant-cluster --service elephant-service --force-new-deployment
