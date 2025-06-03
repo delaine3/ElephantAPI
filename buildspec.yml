@@ -17,9 +17,9 @@ phases:
   pre_build:
     commands:
       - echo "Logging into Amazon ECR..."
-      - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION \
-        | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      # <-- Notice: no backslash/newline here. Entire pipeline on one line:
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | \
+        docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
     commands:
@@ -27,17 +27,16 @@ phases:
       - ./gradlew clean build -x test
       - echo "Gradle build succeeded. Building Docker image..."
       - docker build -t $IMAGE_REPO_NAME .
-      - docker tag $IMAGE_REPO_NAME:latest \
-        $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
 
   post_build:
     commands:
       - echo "Pushing Docker image to ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
-      - echo "Image pushed successfully to ECR at $(date)"
+      - echo "Image pushed at $(date)"
 
-      - printf '[{"name":"'$IMAGE_REPO_NAME'","imageUri":"'$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest'"}]' \
-        > imagedefinitions.json
+      # Generate the JSON that ECS expects, and make it an artifact:
+      - printf '[{"name":"'$IMAGE_REPO_NAME'","imageUri":"'$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest'"}]' > imagedefinitions.json
       - echo "Created imagedefinitions.json:"
       - cat imagedefinitions.json
 
