@@ -8,7 +8,7 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      java: corretto17
     commands:
       - echo "Making Gradle wrapper executable..."
       - chmod +x ./gradlew
