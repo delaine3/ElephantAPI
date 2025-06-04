@@ -24,11 +24,11 @@ phases:
       - docker tag elephantapi:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
 
   post_build:
-    commands:
-      - echo "Pushing image to $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest"
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
-      - echo "Writing imagedefinitions.json..."
-      - printf '[{"name":"elephant-container","imageUri":"%s.dkr.ecr.%s.amazonaws.com/elephantapi:latest"}]' $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION > imagedefinitions.json
+  commands:
+    - echo "Pushing image to $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest"
+    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
+    - echo "Writing imagedefinitions.json..."
+    - printf '[{"name":"elephantapi","imageUri":"%s.dkr.ecr.%s.amazonaws.com/elephantapi:latest"}]' $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION > imagedefinitions.json
 
 artifacts:
   files:
