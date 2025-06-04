@@ -7,18 +7,18 @@ phases:
   pre_build:
     commands:
       - echo Logging into Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 982534361279.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
     commands:
       - echo Building the JAR file...
       - ./gradlew clean build -x test
       - echo Building Docker image...
       - docker build -t my-java-api .
-      - docker tag my-java-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/my-java-api:latest
+      - docker tag my-java-api:latest 982534361279.ecr.$AWS_DEFAULT_REGION.amazonaws.com/my-java-api:latest
   post_build:
     commands:
       - echo Pushing Docker image to Amazon ECR...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/my-java-api:latest
+      - docker push 982534361279.ecr.$AWS_DEFAULT_REGION.amazonaws.com/my-java-api:latest
 
 artifacts:
   files:
