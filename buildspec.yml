@@ -30,4 +30,4 @@ phases:
 
 artifacts:
   files:
-    - im-dummy.txt
+    - build/libs/*.jar
