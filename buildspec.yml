@@ -27,3 +27,7 @@ phases:
     commands:
       - echo "Pushing image to $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest"
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
+
+artifacts:
+  files:
+    - im-dummy.txt
