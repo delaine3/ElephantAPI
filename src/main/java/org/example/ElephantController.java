@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 })
 public class ElephantController {
 
-    @GetMapping("/")
+    @GetMapping("/") 
     public String home() {
         return "The backend is running! 🐘";
     }

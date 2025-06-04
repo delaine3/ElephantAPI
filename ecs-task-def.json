@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "elephantapi",
-      "image": "<REPLACE_ME>",
+      "image": "982534361279.dkr.ecr.us-east-2.amazonaws.com/elephantapi:latest",
       "essential": true,
       "portMappings": [
         {
