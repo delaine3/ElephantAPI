@@ -20,10 +20,10 @@
      commands:
        - echo Building the JAR file...
        - ./gradlew clean build -x test
-       - docker build -t elephant-api .  
--      - docker tag elephant-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephant-api:latest
-+      - docker tag elephant-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
+       - docker build -t elephantapi .  
+-      - docker tag elephantapi:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
++      - docker tag elephantapi:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
    post_build:
      commands:
--      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephant-api:latest
+-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
 +      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
