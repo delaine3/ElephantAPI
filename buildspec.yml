@@ -13,9 +13,7 @@ phases:
   pre_build:
     commands:
       - echo "Logging into Amazon ECR..."
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION \
-        | docker login --username AWS --password-stdin \
-        $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - chmod +x ./gradlew
 
   build:
@@ -23,8 +21,7 @@ phases:
       - echo "Building the JAR file..."
       - ./gradlew clean build -x test
       - docker build -t elephantapi .
-      - docker tag elephantapi:latest \
-        $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
+      - docker tag elephantapi:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephantapi:latest
 
   post_build:
     commands:
