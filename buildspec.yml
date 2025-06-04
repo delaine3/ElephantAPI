@@ -18,8 +18,8 @@ phases:
     commands:
       - echo Building the JAR file...
       - ./gradlew clean build -x test
-      - docker build -t java-api .
-      - docker tag java-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/java-api:latest
+      - docker build -t elephant-api .
+      - docker tag elephant-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephant-api:latest
   post_build:
     commands:
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/java-api:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/elephant-api:latest
